@@ -1,0 +1,26 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts:
+########################### Do Not Modify ###########################
+  become: yes
+  tasks:
+    - name: install digital ocean repo
+      yum_repository:
+        name: digitalocean-agent
+        description: DigitalOcean agent
+        baseurl: https://repos.sonar.digitalocean.com/yum/\$basearch
+        gpgcheck: yes
+        gpgkey: https://repos.sonar.digitalocean.com/sonar-agent.asc
+        failovermethod: priority
+
+    - name: install digital ocean agent
+      yum:
+        name: do-agent
+        state: latest
