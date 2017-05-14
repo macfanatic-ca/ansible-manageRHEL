@@ -1,0 +1,21 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts:
+########################### Do Not Modify ###########################
+  become: yes
+  vars:
+    package_to_exclude: nss*
+  tasks:
+    - name: Exclude updates
+      lineinfile:
+        path: /etc/yum.conf
+        line: 'exclude={{ package_to_exclude }}'
+        regexp: '^exclude={{ package_to_exclude }}'
+        state: present
