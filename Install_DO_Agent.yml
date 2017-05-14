@@ -25,12 +25,12 @@
         name: do-agent
         state: latest
 
-    - name: start digital ocean agent
-      service:
-        name: do-agent
-        state: started
-
     - name: enable digital ocean agent
       service:
         name: do-agent
         enabled: yes
+
+    - name: start digital ocean agent
+      service:
+        name: do-agent
+        state: started
