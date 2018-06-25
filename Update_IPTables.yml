@@ -1,0 +1,26 @@
+---
+########################### Target Host(s) ###########################
+# Specify a Single host
+#       hosts: server1
+# Specify a defined group of hosts from hosts inventory
+#       hosts: production
+# Specify a group of hosts
+#       hosts: server1:server2
+########################### Specify Host(s) ##########################
+- hosts: 
+########################### Do Not Modify ###########################
+  become: yes
+  tasks:
+    - name: Replace Office IP Address
+      lineinfile:
+        path: /etc/sysconfig/iptables
+        state: present
+        regexp: -A INPUT -s 184.71.163.38 -m state --state NEW -m tcp -p tcp --dport 22 -j LOG_ACCEPT
+        line: -A INPUT -s 209.121.124.132 -m state --state NEW -m tcp -p tcp --dport 22 -j LOG_ACCEPT
+      notify: reload_iptables
+
+  handlers:
+    - name: reload_iptables
+      systemd:
+        name: iptables
+        state: reloaded
